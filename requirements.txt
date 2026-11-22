@@ -1,0 +1,7 @@
+# Runtime dependencies
+# -------------------
+# PyYAML: Parses the tool manifest (tools.yaml).  YAML is far more readable
+# than JSON for a user-editable configuration file and is the de-facto
+# standard for declarative manifests.  This is the ONLY runtime dependency
+# beyond the Python standard library.
+pyyaml>=6.0

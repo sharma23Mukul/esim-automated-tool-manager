@@ -1,0 +1,200 @@
+# eSim Tool Manager – Default Tool Manifest
+# ===========================================
+# This file is the SINGLE SOURCE OF TRUTH for every external tool that eSim
+# depends on.  To add a new tool, copy any entry below and customise it;
+# no code changes are needed.
+#
+# Schema version 1.0
+
+schema_version: "1.0"
+
+# ---------------------------------------------------------------------------
+# eSim release → minimum tool versions
+# ---------------------------------------------------------------------------
+esim_versions:
+  "2.5":
+    description: "eSim 2.5 – latest stable release"
+    tool_constraints:
+      ngspice: ">=42"
+      kicad: ">=7.0"
+      python3: ">=3.8"
+
+# ---------------------------------------------------------------------------
+# Tool definitions
+# ---------------------------------------------------------------------------
+tools:
+  ngspice:
+    name: "Ngspice"
+    description: "Mixed-level/mixed-signal electronic circuit simulator"
+    homepage: "https://ngspice.sourceforge.io/"
+    category: simulation
+    required: true
+    version_command: ["ngspice", "--version"]
+    version_pattern: "ngspice[- ]?(\\d+\\.?\\d*\\.?\\d*)"
+    min_version: "42"
+    max_version: null
+    pinned_version: null
+    packages:
+      apt: ngspice
+      brew: ngspice
+      choco: ngspice
+      pip: null
+    dependencies: []
+    config_hints:
+      env_vars:
+        SPICE_LIB_DIR: "/usr/share/ngspice"
+      paths: []
+    platforms:
+      - linux
+      - darwin
+      - windows
+
+  kicad:
+    name: "KiCad"
+    description: "EDA suite for schematic capture and PCB design"
+    homepage: "https://www.kicad.org/"
+    category: design
+    required: true
+    version_command: ["kicad-cli", "version"]
+    version_pattern: "(\\d+\\.\\d+\\.?\\d*)"
+    min_version: "7.0"
+    max_version: null
+    pinned_version: null
+    packages:
+      apt: kicad
+      brew: kicad
+      choco: kicad
+      pip: null
+    dependencies: []
+    config_hints:
+      env_vars: {}
+      paths: []
+    platforms:
+      - linux
+      - darwin
+      - windows
+
+  ghdl:
+    name: "GHDL"
+    description: "Open-source VHDL simulator"
+    homepage: "https://github.com/ghdl/ghdl"
+    category: simulation
+    required: false
+    version_command: ["ghdl", "--version"]
+    version_pattern: "GHDL\\s+(\\d+\\.\\d+\\.?\\d*)"
+    min_version: "3.0"
+    max_version: null
+    pinned_version: null
+    packages:
+      apt: ghdl
+      brew: ghdl
+      choco: null
+      pip: null
+    dependencies: []
+    config_hints:
+      env_vars: {}
+      paths: []
+    platforms:
+      - linux
+      - darwin
+
+  verilator:
+    name: "Verilator"
+    description: "Verilog/SystemVerilog simulator and lint tool"
+    homepage: "https://www.veripool.org/verilator/"
+    category: simulation
+    required: false
+    version_command: ["verilator", "--version"]
+    version_pattern: "Verilator\\s+(\\d+\\.\\d+\\.?\\d*)"
+    min_version: "5.0"
+    max_version: null
+    pinned_version: null
+    packages:
+      apt: verilator
+      brew: verilator
+      choco: null
+      pip: null
+    dependencies: []
+    config_hints:
+      env_vars: {}
+      paths: []
+    platforms:
+      - linux
+      - darwin
+
+  llvm:
+    name: "LLVM"
+    description: "Compiler infrastructure (used for eSim tool compilation)"
+    homepage: "https://llvm.org/"
+    category: compiler
+    required: false
+    version_command: ["llvm-config", "--version"]
+    version_pattern: "(\\d+\\.\\d+\\.?\\d*)"
+    min_version: "14.0"
+    max_version: null
+    pinned_version: null
+    packages:
+      apt: llvm
+      brew: llvm
+      choco: llvm
+      pip: null
+    dependencies: []
+    config_hints:
+      env_vars:
+        LLVM_DIR: "/usr/lib/llvm-14"
+      paths: []
+    platforms:
+      - linux
+      - darwin
+      - windows
+
+  python3:
+    name: "Python 3"
+    description: "Python interpreter (required by eSim core)"
+    homepage: "https://www.python.org/"
+    category: runtime
+    required: true
+    version_command: ["python3", "--version"]
+    version_pattern: "Python\\s+(\\d+\\.\\d+\\.?\\d*)"
+    min_version: "3.8"
+    max_version: null
+    pinned_version: null
+    packages:
+      apt: python3
+      brew: python3
+      choco: python3
+      pip: null
+    dependencies: []
+    config_hints:
+      env_vars: {}
+      paths: []
+    platforms:
+      - linux
+      - darwin
+      - windows
+
+  makerchip:
+    name: "Makerchip"
+    description: "Free online IDE for TL-Verilog, SystemVerilog, and VHDL"
+    homepage: "https://makerchip.com/"
+    category: simulation
+    required: false
+    version_command: ["sandpiper-saas", "--version"]
+    version_pattern: "(\\d+\\.\\d+\\.?\\d*)"
+    min_version: "1.0"
+    max_version: null
+    pinned_version: null
+    packages:
+      apt: null
+      brew: null
+      choco: null
+      pip: sandpiper-saas
+    dependencies:
+      - python3
+    config_hints:
+      env_vars: {}
+      paths: []
+    platforms:
+      - linux
+      - darwin
+      - windows

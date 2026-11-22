@@ -1,0 +1,63 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "esim-toolmanager"
+version = "0.1.0"
+description = "Automated Tool Manager for eSim – installation, configuration, updates and dependency management of external EDA tools"
+readme = "README.md"
+license = {text = "GPL-3.0-or-later"}
+requires-python = ">=3.8"
+authors = [{name = "Mukul Sharma", email = "sharma21mukul@gmail.com"}]
+keywords = ["esim", "eda", "tool-manager", "electronics", "ngspice", "kicad"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Electronic Design Automation (EDA)",
+]
+dependencies = [
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "ruff>=0.1.0",
+]
+
+[project.scripts]
+esim-tm = "esim_toolmanager.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["esim_toolmanager*"]
+
+[tool.setuptools.package-data]
+esim_toolmanager = ["data/*.yaml"]
+
+[tool.ruff]
+target-version = "py38"
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "A", "SIM"]
+ignore = ["E501", "UP006", "UP045"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-v --tb=short"
+
+[tool.coverage.run]
+source = ["esim_toolmanager"]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 80

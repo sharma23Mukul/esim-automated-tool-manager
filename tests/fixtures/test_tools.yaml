@@ -1,0 +1,92 @@
+schema_version: "1.0"
+esim_versions:
+  "2.5":
+    description: "Test eSim version"
+    tool_constraints:
+      mock_tool: ">=1.0"
+tools:
+  mock_tool:
+    name: "MockTool"
+    description: "A mock tool for testing"
+    homepage: "https://example.com"
+    category: simulation
+    required: true
+    version_command: ["mocktool", "--version"]
+    version_pattern: "MockTool\\s+(\\d+\\.\\d+\\.?\\d*)"
+    min_version: "1.0"
+    max_version: null
+    pinned_version: null
+    packages:
+      apt: mock-tool
+      brew: mock-tool
+      choco: mock-tool
+      pip: mock-tool
+    dependencies: []
+    config_hints:
+      env_vars:
+        MOCK_HOME: "/usr/share/mock"
+      paths:
+        - "/usr/bin"
+    platforms:
+      - linux
+      - darwin
+      - windows
+  optional_tool:
+    name: "OptionalTool"
+    description: "An optional tool"
+    homepage: "https://example.com"
+    category: other
+    required: false
+    version_command: ["optool", "--version"]
+    version_pattern: "(\\d+\\.\\d+\\.?\\d*)"
+    min_version: "2.0"
+    max_version: null
+    pinned_version: null
+    packages:
+      apt: opt-tool
+      brew: null
+      choco: null
+      pip: null
+    dependencies:
+      - mock_tool
+    config_hints:
+      env_vars: {}
+      paths: []
+    platforms:
+      - linux
+  dep_cycle_a:
+    name: "CycleA"
+    description: "For circular dep test"
+    category: other
+    required: false
+    version_command: ["cyclea", "--version"]
+    version_pattern: "(\\d+)"
+    min_version: null
+    max_version: null
+    pinned_version: null
+    packages: {}
+    dependencies:
+      - dep_cycle_b
+    config_hints:
+      env_vars: {}
+      paths: []
+    platforms:
+      - linux
+  dep_cycle_b:
+    name: "CycleB"
+    description: "For circular dep test"
+    category: other
+    required: false
+    version_command: ["cycleb", "--version"]
+    version_pattern: "(\\d+)"
+    min_version: null
+    max_version: null
+    pinned_version: null
+    packages: {}
+    dependencies:
+      - dep_cycle_a
+    config_hints:
+      env_vars: {}
+      paths: []
+    platforms:
+      - linux
