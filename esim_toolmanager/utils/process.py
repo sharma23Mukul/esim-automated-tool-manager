@@ -66,7 +66,7 @@ def run_command(
         )
         raise
     except FileNotFoundError:
-        logger.error("Command not found: %s", cmd[0])
+        logger.debug("Command not found: %s", cmd[0])
         raise
     except subprocess.TimeoutExpired:
         logger.error("Command timed out after %ds: %s", timeout, cmd_str)
@@ -89,6 +89,13 @@ def get_command_version(
     Returns ``None`` on any failure.
     """
     import re
+
+    if not cmd:
+        return None
+
+    # Check if executable exists first to avoid noisy process errors
+    if find_executable(cmd[0]) is None:
+        return None
 
     try:
         result = run_command(cmd, check=False, dry_run=False, timeout=30)
