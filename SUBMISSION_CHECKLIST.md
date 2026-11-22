@@ -1,111 +1,83 @@
-# FOSSEE eSim Winter Internship 2026 — Task 5 Submission Checklist
+# eSim Automated Tool Manager — Submission Reference & Checklist
 
 **Applicant:** Mukul Sharma (`sharma23Mukul`)  
-**Task:** Task 5: "Automated Tool Manager" for eSim  
-**Target Repository:** Private GitHub repository shared with [`github.com/Eyantra698Sumanto`](https://github.com/Eyantra698Sumanto)  
-**Submission Email:** `contact-esim@fossee.in`  
-**Subject Line:** `eSim Semester Long Internship - Autumn 2026 Submission Task 5`  
+**Project:** Task 5: Automated Tool Manager for eSim  
+**Repository:** Private GitHub repository shared with [`github.com/Eyantra698Sumanto`](https://github.com/Eyantra698Sumanto)  
+**Submission Contact:** `contact-esim@fossee.in`  
+**Email Subject:** `eSim Semester Long Internship - Autumn 2026 Submission Task 5`  
 
 ---
 
-## 1. Requirements Compliance Checklist
+## 1. Feature Verification
 
-### Official Requirements (Goal: 100% of All 5 + Optionals)
-
-- [x] **Requirement 1: Tool Installation Management**
-  - *Status:* **Fully Implemented & Verified**
+- [x] **Tool Installation Management**
   - *Module:* `esim_toolmanager.core.installer`, `esim_toolmanager.backends.*`
-  - *CLI Command:* `esim-tm install <tool>`, `esim-tm install --all`, `esim-tm install <tool> --version <ver>`
-  - *Verification:* Detects platform package managers (`apt`, `brew`, `choco`, `pip`), handles version pinning, and provides full `--dry-run` safety.
+  - *Commands:* `esim-tm install <tool>`, `esim-tm install --all`, `esim-tm install <tool> --version <ver>`
+  - *Capabilities:* Detects system package managers (`apt`, `brew`, `choco`, `pip`), supports version pinning, and provides full `--dry-run` simulation.
 
-- [x] **Requirement 2: Update and Upgrade System**
-  - *Status:* **Fully Implemented & Verified**
+- [x] **Update and Upgrade System**
   - *Module:* `esim_toolmanager.core.updater`, `esim_toolmanager.utils.version`
-  - *CLI Command:* `esim-tm outdated`, `esim-tm update <tool>`, `esim-tm update --all`
-  - *Verification:* Compares installed runtime versions against eSim compatibility constraints and executes upgrades with zero or minimal manual intervention.
+  - *Commands:* `esim-tm outdated`, `esim-tm update <tool>`, `esim-tm update --all`
+  - *Capabilities:* Evaluates installed versions against minimum constraints in `tools.yaml` and updates outdated tools via the active backend.
 
-- [x] **Requirement 3: Configuration Handling**
-  - *Status:* **Fully Implemented & Verified**
+- [x] **Configuration & Path Management**
   - *Module:* `esim_toolmanager.core.config`
-  - *CLI Command:* `esim-tm configure [tool]`, `esim-tm configure --export --shell <bash|powershell|cmd|fish>`
-  - *Verification:* Manages `SPICE_LIB_DIR`, `LLVM_DIR`, and `PATH` additions; performs automatic timestamped backups (`.bak`) before saving.
+  - *Commands:* `esim-tm configure [tool]`, `esim-tm configure --export --shell <bash|powershell|cmd|fish>`
+  - *Capabilities:* Tracks `SPICE_LIB_DIR`, `LLVM_DIR`, and `PATH` entries. Generates shell export scripts and backs up configurations (`.bak`) before saving.
 
-- [x] **Requirement 4: Dependency Checker**
-  - *Status:* **Fully Implemented & Verified**
+- [x] **Dependency Resolution & Validation**
   - *Module:* `esim_toolmanager.core.dependency`
-  - *CLI Command:* `esim-tm check`, `esim-tm list`
-  - *Verification:* Validates presence, minimum versions, and recursive dependencies; features cycle detection and produces clear, actionable fix suggestions.
+  - *Commands:* `esim-tm check`, `esim-tm list`
+  - *Capabilities:* Validates tool versions and recursive dependency trees, detects cyclic dependencies, and provides actionable remediation suggestions.
 
-- [x] **Requirement 5: User Interface & Action Logs**
-  - *Status:* **Fully Implemented & Verified**
+- [x] **CLI Interface & Logging**
   - *Module:* `esim_toolmanager.cli`, `esim_toolmanager.utils.log`
-  - *CLI Command:* `esim-tm --help`, `esim-tm list`, `esim-tm logs`
-  - *Verification:* Colorized ANSI output, machine-readable `--json` flag, and thread-safe rotating log files (`1MB`, 5 backups).
+  - *Commands:* `esim-tm --help`, `esim-tm list`, `esim-tm logs`
+  - *Capabilities:* Colorized console output, scriptable `--json` output across commands, and rotating log files (`1MB`, 5 backups).
 
-### Optional & Creativity Features
+- [x] **Cross-Platform Support**
+  - Native package manager backends for Debian/Ubuntu (APT), macOS (Homebrew), Windows (Chocolatey), and Python packages (pip).
 
-- [x] **Optional: Cross-Platform Support**
-  - Linux (Debian/Ubuntu/APT), macOS (Homebrew), Windows (Chocolatey/winget), and Python packages (pip).
-- [x] **Creativity 1: System Health Doctor (`doctor`)**
-  - Comprehensive health check report rendered in GitHub Flavored Markdown or JSON for attaching to bug reports.
-- [x] **Creativity 2: Universal Dry-Run & Automated Backups**
-  - Global `--dry-run` flag guarantees safe testing without mutating host state; configurations are backed up automatically.
-- [x] **Creativity 3: Declarative Extensibility (Manifest System)**
-  - Tools are configured via `tools.yaml`. New EDA tools can be added by editing the manifest without modifying Python code.
+- [x] **Diagnostic Health Check (`doctor`)**
+  - Diagnostic command inspecting system environment, active package managers, and toolchain versions, outputting in Markdown or JSON.
+
+- [x] **Non-Destructive Dry-Run Mode**
+  - Global `--dry-run` flag guarantees safe execution without modifying host packages or configuration files.
+
+- [x] **Declarative Extensibility**
+  - New EDA tools can be added directly via `tools.yaml` without changing Python code.
 
 ---
 
-## 2. Requirement Traceability Matrix
+## 2. Requirements Traceability
 
-| Requirement | Module / Component | CLI Demonstration | Unit Tests |
+| Feature | Primary Module | Demonstration Command | Automated Tests |
 |---|---|---|---|
-| **1. Installation** | `core.installer`<br/>`backends.*` | `esim-tm install ngspice --dry-run` | `tests/test_installer.py`<br/>`tests/test_backends.py` |
-| **2. Updates** | `core.updater`<br/>`utils.version` | `esim-tm outdated`<br/>`esim-tm update --dry-run` | `tests/test_version.py`<br/>`tests/test_updater.py` |
-| **3. Configuration** | `core.config` | `esim-tm configure --export --shell bash` | `tests/test_config.py` |
-| **4. Dependency Check**| `core.dependency` | `esim-tm check` | `tests/test_dependency.py` |
-| **5. CLI & Logs** | `cli.py`<br/>`utils.log` | `esim-tm list`<br/>`esim-tm logs` | `tests/test_cli.py`<br/>`tests/test_log.py` |
-| **Doctor Diagnostics**| `core.doctor` | `esim-tm doctor --format markdown` | `tests/test_doctor.py` |
-| **Platform Detection**| `platform.detect` | Auto-detected across commands | `tests/test_platform.py` |
+| **Installation** | `core/installer.py`<br/>`backends/` | `esim-tm install ngspice --dry-run` | `tests/test_installer.py`<br/>`tests/test_backends.py` |
+| **Updates** | `core/updater.py`<br/>`utils/version.py` | `esim-tm outdated`<br/>`esim-tm update --dry-run` | `tests/test_version.py`<br/>`tests/test_updater.py` |
+| **Configuration** | `core/config.py` | `esim-tm configure --export --shell bash` | `tests/test_config.py` |
+| **Dependency Checking** | `core/dependency.py` | `esim-tm check` | `tests/test_dependency.py` |
+| **CLI & Logs** | `cli.py`<br/>`utils/log.py` | `esim-tm list`<br/>`esim-tm logs` | `tests/test_cli.py` |
+| **Diagnostics** | `core/doctor.py` | `esim-tm doctor` | `tests/test_doctor.py` |
+| **Platform Detection** | `platform/detect.py` | Automatic detection across commands | `tests/test_platform.py` |
 
 ---
 
-## 3. Deliverables Status
+## 3. Submission Steps
 
-- [x] **Design Document (`DESIGN.md`)**: Complete architectural breakdown, Mermaid component and sequence diagrams, manifest schema specification, security analysis, and design trade-offs.
-- [x] **Code Implementation**: Production-grade Python package (`esim_toolmanager`) following PEP 8, typed with type annotations, and installed via standard `pyproject.toml`.
-- [x] **Execution & Test Instructions (`README.md`)**: Detailed setup, command references, examples, and testing instructions.
-- [x] **Demo Video Script (`demo/demo_script.md`)**: Exact 5-minute video presentation timeline, commands, realistic outputs, and spoken narration.
-- [x] **CI Pipeline (`.github/workflows/ci.yml`)**: GitHub Actions workflow testing matrix across Ubuntu and Windows on Python 3.8, 3.10, and 3.12.
-- [x] **Automated Test Suite**: 159 tests passing, achieving **85.75% code coverage** (exceeding the 80% requirement).
-
----
-
-## 4. Final Submission Steps
-
-1. **Initialize Git Repository & Commit:**
+1. **Verify Git Remote and Branch:**
    ```bash
-   git init
-   git add .
-   git commit -m "Initial complete submission for eSim Task 5: Automated Tool Manager"
+   git remote -v
+   git status
    ```
 
-2. **Create Private GitHub Repository:**
-   - Create a private repository on GitHub (`esim-automated-tool-manager`).
-   - Push your code:
-     ```bash
-     git remote add origin https://github.com/sharma23Mukul/esim-automated-tool-manager.git
-     git branch -M main
-     git push -u origin main
-     ```
+2. **Verify Collaborator Access:**
+   - Confirm [`Eyantra698Sumanto`](https://github.com/Eyantra698Sumanto) is listed under **Settings** > **Collaborators** on the GitHub repository.
 
-3. **Grant Access to Evaluator:**
-   - Go to **Settings** > **Collaborators** on GitHub.
-   - Add [`Eyantra698Sumanto`](https://github.com/Eyantra698Sumanto) with read access.
-
-4. **Send Official Submission Email:**
+3. **Send Submission Email:**
    - **To:** `contact-esim@fossee.in`
    - **Subject:** `eSim Semester Long Internship - Autumn 2026 Submission Task 5`
-   - **Body:**
+   - **Template:**
      ```text
      Respected eSim / FOSSEE Team,
 
@@ -113,15 +85,15 @@
 
      Candidate Name: Mukul Sharma
      Repository URL: https://github.com/sharma23Mukul/esim-automated-tool-manager
-     (Access has been granted to github.com/Eyantra698Sumanto)
+     (Collaborator access granted to github.com/Eyantra698Sumanto)
 
      Summary of Deliverables:
-     - All 5 Core Requirements + Cross-Platform + Creativity Features implemented
-     - Architecture & Design Document (DESIGN.md)
-     - Full User & Developer Documentation (README.md)
-     - 169 automated unit tests achieving 88% coverage (100% mocked, dry-run safe)
-     - Continuous Integration pipeline (.github/workflows/ci.yml)
-     - 5-Minute Demo Script & Narration (demo/demo_script.md)
+     - Technical Design Document (DESIGN.md) covering architecture, data flows, and security
+     - User & Developer Documentation (README.md) with quick start and CLI reference
+     - Core package implementation with backends for APT, Homebrew, Chocolatey, and pip
+     - 169 unit and integration tests with 88% code coverage (100% mocked, dry-run safe)
+     - GitHub Actions CI workflow for Ubuntu and Windows (.github/workflows/ci.yml)
+     - Video Demonstration Script (demo/demo_script.md)
 
      Thank you,
      Mukul Sharma

@@ -1,46 +1,42 @@
-# eSim Automated Tool Manager — 5-Minute Demo Video Script
+# eSim Automated Tool Manager — Video Demonstration Script
 
-**Candidate:** Mukul Sharma (`sharma23Mukul`)  
-**Application:** FOSSEE eSim Winter Internship 2026 (IIT Bombay), Task 5  
-**Topic:** Automated Tool Manager for eSim (`esim-tm`)  
+**Author:** Mukul Sharma (`sharma23Mukul`)  
+**Project:** eSim Automated Tool Manager (`esim-tm`)  
 **Duration:** ~5 Minutes  
 
 ---
 
-## Video Outline & Timeline
+## Timeline & Structure
 
-| Time | Section | Key Demonstration / Action |
-|---|---|---|
-| **0:00 - 0:45** | **Introduction & Problem Statement** | Overview of eSim toolchain complexity; introducing `esim-tm`. |
-| **0:45 - 1:30** | **Discovery & Status (`list`)** | Show installed tools, version status, and filtering. |
-| **1:30 - 2:15** | **Dependency Checking (`check`)** | Run compatibility check and inspect actionable fix suggestions. |
-| **2:15 - 3:00** | **Installation & Dry-Run Safety (`install`)** | Demonstrate safe installation simulation using `--dry-run`. |
-| **3:00 - 3:45** | **System Diagnostics (`doctor`)** | Run full system diagnostic report in Markdown and JSON. |
-| **3:45 - 4:15** | **Environment Configuration (`configure`)** | Automatic environment variables and shell export generation. |
-| **4:15 - 4:45** | **Extensibility (Adding a New Tool)** | Show how `tools.yaml` adds tools without touching code. |
-| **4:45 - 5:00** | **Test Suite & Conclusion** | Run 159 tests achieving 86% coverage; closing remarks. |
-
----
-
-## Detailed Demo Script & Spoken Narrative
-
-### 1. Introduction (0:00 - 0:45)
-**Speaker Narration:**
-> "Hello everyone! My name is Mukul Sharma, and this is my submission for Task 5 of the FOSSEE eSim Winter Internship 2026 at IIT Bombay: the Automated Tool Manager for eSim.
-> 
-> eSim depends heavily on external EDA tools such as Ngspice, KiCad, GHDL, Verilator, and LLVM. Setting these up manually across different operating systems is often tedious, prone to version mismatches, and difficult to troubleshoot.
-> 
-> To solve this, I designed `esim-tm` — a declarative, manifest-driven Python tool manager with full dry-run safety, cross-platform package manager support, and automated health diagnostics."
+| Time | Section | Action / Command | Key Points Covered |
+|---|---|---|---|
+| **0:00 - 0:40** | **Introduction** | Terminal / README | Project scope: managing external tools (Ngspice, KiCad, GHDL, Verilator, LLVM) in eSim. |
+| **0:40 - 1:20** | **Tool Status (`list`)** | `python -m esim_toolmanager list` | Tool table, version detection, status flags, and `--json` format. |
+| **1:20 - 2:00** | **Dependency Checking (`check`)** | `python -m esim_toolmanager check` | Compatibility validation against minimum constraints and fix suggestions. |
+| **2:00 - 2:45** | **Installation & Dry-Run Mode** | `python -m esim_toolmanager --dry-run install ngspice` | Safe simulation across APT, Homebrew, and Chocolatey. |
+| **2:45 - 3:30** | **System Diagnostics (`doctor`)** | `python -m esim_toolmanager doctor` | Diagnostic health report in Markdown/JSON for troubleshooting. |
+| **3:30 - 4:00** | **Environment Configuration** | `python -m esim_toolmanager configure --export --shell bash` | Exporting environment variables (`SPICE_LIB_DIR`), `PATH`, and `.bak` backups. |
+| **4:00 - 4:30** | **Manifest Extensibility** | View `data/tools.yaml` | Adding new tools declaratively via YAML without modifying source code. |
+| **4:30 - 5:00** | **Automated Tests & Summary** | `python -m pytest tests/` | 169 unit tests passing with 88% coverage. |
 
 ---
 
-### 2. Inspecting Tool Status: `esim-tm list` (0:45 - 1:30)
-**Speaker Narration:**
-> "Let's begin by listing all the external tools eSim needs. We simply run `esim-tm list`."
+## Spoken Narration & Terminal Commands
 
+### 1. Introduction (0:00 - 0:40)
+**Spoken:**
+> "Hello! My name is Mukul Sharma, and this is a demonstration of the Automated Tool Manager for eSim, or `esim-tm`.
+> 
+> eSim depends on external EDA tools and compilers such as Ngspice, KiCad, GHDL, Verilator, and LLVM. Managing these manually across different platforms can lead to version mismatches and broken paths.
+> 
+> `esim-tm` is a Python tool that manages the entire lifecycle of these dependencies—including discovery, installation, configuration, and version checks—across Linux, macOS, and Windows."
+
+---
+
+### 2. Checking Tool Status: `list` (0:40 - 1:20)
 **Command:**
 ```bash
-esim-tm list
+python -m esim_toolmanager list
 ```
 
 **Expected Output:**
@@ -58,19 +54,17 @@ Makerchip        —            no         1.0        ❌ missing
 7 tools shown.
 ```
 
-**Speaker Narration:**
-> "Notice the clear tabular view showing installed versions, required flags, minimum compatible versions, and current status.
-> We can also filter for only required tools or by category, and even pass `--json` for automated script pipelines."
+**Spoken:**
+> "Running `esim-tm list` shows a clean table of all tools configured in our manifest. It displays the detected runtime version, whether the tool is required by eSim, the minimum version constraint, and the current installation status.
+> 
+> We can filter this list by category or requirement, or pass `--json` when integrating into automated setup scripts."
 
 ---
 
-### 3. Dependency & Compatibility Checking: `esim-tm check` (1:30 - 2:15)
-**Speaker Narration:**
-> "Next, let's run `esim-tm check` to verify our entire toolchain."
-
+### 3. Dependency & Compatibility Checking: `check` (1:20 - 2:00)
 **Command:**
 ```bash
-esim-tm check
+python -m esim_toolmanager check
 ```
 
 **Expected Output:**
@@ -88,19 +82,15 @@ Dependency Check Report
 4/7 tools OK, 0 missing, 0 outdated.
 ```
 
-**Speaker Narration:**
-> "The checker verifies minimum version constraints, checks recursive upstream dependencies with cycle prevention, and provides clear suggestions for any missing components."
+**Spoken:**
+> "Next, `esim-tm check` validates whether all dependencies meet compatibility constraints. It checks installed versions against minimum requirements, inspects recursive dependencies with cycle detection, and provides concrete fix suggestions whenever a required component is missing."
 
 ---
 
-### 4. Automated Installation with Dry-Run Safety: `esim-tm install` (2:15 - 3:00)
-**Speaker Narration:**
-> "Now let's look at installation. In production and educational lab environments, safety is paramount. That's why every mutating command in `esim-tm` supports `--dry-run`.
-> Let's simulate installing Ngspice."
-
+### 4. Installation with Dry-Run Mode: `install` (2:00 - 2:45)
 **Command:**
 ```bash
-esim-tm --dry-run install ngspice
+python -m esim_toolmanager --dry-run install ngspice
 ```
 
 **Expected Output:**
@@ -108,19 +98,17 @@ esim-tm --dry-run install ngspice
   ✅ Would install Ngspice via apt.
 ```
 
-**Speaker Narration:**
-> "`esim-tm` automatically detected that we are on a Debian/Ubuntu system, mapped Ngspice to the `apt` backend, and verified what command would be run — without modifying our host system.
-> The same command on macOS would use Homebrew, and on Windows it would use Chocolatey."
+**Spoken:**
+> "When installing tools, it is useful to preview actions before running them. All mutating commands in `esim-tm` support the `--dry-run` flag.
+> 
+> Here, `esim-tm` detects the host OS, maps Ngspice to the APT package manager backend, and verifies the command without touching system files. The same command maps to Homebrew on macOS or Chocolatey on Windows."
 
 ---
 
-### 5. Health Check Diagnostics: `esim-tm doctor` (3:00 - 3:45)
-**Speaker Narration:**
-> "One of the standout features of `esim-tm` is the `doctor` command. When a student or researcher encounters a simulation error in eSim, they can run `esim-tm doctor` to generate a comprehensive diagnostic report."
-
+### 5. System Health Diagnostics: `doctor` (2:45 - 3:30)
 **Command:**
 ```bash
-esim-tm doctor
+python -m esim_toolmanager doctor
 ```
 
 **Expected Output:**
@@ -151,18 +139,17 @@ esim-tm doctor
 4/7 tools OK, 0 missing, 0 outdated.
 ```
 
-**Speaker Narration:**
-> "This report renders directly as clean GitHub Flavored Markdown or structured JSON with `--format json`, making it effortless to paste into GitHub issues or FOSSEE bug reports."
+**Spoken:**
+> "For troubleshooting, the `doctor` command runs an end-to-end diagnostic check on the system environment, active package managers, and toolchain versions.
+> 
+> The output renders as Markdown or JSON, which makes it easy for users to paste into bug reports or discussion forums."
 
 ---
 
-### 6. Environment Configuration & Shell Exports: `esim-tm configure` (3:45 - 4:15)
-**Speaker Narration:**
-> "To ensure that external tools work seamlessly within eSim, `esim-tm configure` manages required environment variables and PATH additions, automatically backing up old configurations before saving."
-
+### 6. Environment & Configuration: `configure` (3:30 - 4:00)
 **Command:**
 ```bash
-esim-tm configure --export --shell bash
+python -m esim_toolmanager configure --export --shell bash
 ```
 
 **Expected Output:**
@@ -173,23 +160,22 @@ export LLVM_DIR="/usr/lib/llvm-14"
 export PATH="/usr/share/ngspice/bin:$PATH"
 ```
 
-**Speaker Narration:**
-> "Users can easily evaluate this into their `.bashrc`, `.zshrc`, or PowerShell profile with a single command."
+**Spoken:**
+> "To ensure tools integrate properly with eSim, `configure` manages environment variables like `SPICE_LIB_DIR` and `PATH`.
+> 
+> It can output export scripts for Bash, Zsh, Fish, or PowerShell. Any updates automatically create timestamped `.bak` files to prevent configuration loss."
 
 ---
 
-### 7. Extensibility: Adding a New Tool Declaratively (4:15 - 4:45)
-**Speaker Narration:**
-> "Extensibility is a core design principle. If eSim adds support for a new tool like `yosys` or `openlane`, developers don't need to touch a single line of Python code.
-> They simply add an entry to `tools.yaml` with the tool name, category, version command, regex pattern, and package mappings for `apt`, `brew`, and `choco`.
-> The manager immediately loads, checks, and installs it."
+### 7. Adding New Tools via Manifest (4:00 - 4:30)
+**Spoken:**
+> "Adding new tools requires zero code changes. In `esim_toolmanager/data/tools.yaml`, each tool is defined with its name, version detection command, regex pattern, and package mappings for `apt`, `brew`, and `choco`.
+> 
+> Maintainers can add or modify tool definitions directly in YAML, and `esim-tm` immediately picks them up."
 
 ---
 
-### 8. Testing & Conclusion (4:45 - 5:00)
-**Speaker Narration:**
-> "Finally, let's run the automated test suite."
-
+### 8. Testing & Summary (4:30 - 5:00)
 **Command:**
 ```bash
 python -m pytest tests/ -v --tb=short
@@ -197,10 +183,10 @@ python -m pytest tests/ -v --tb=short
 
 **Expected Output:**
 ```text
-============================= 159 passed in 1.64s =============================
+============================= 169 passed in 3.19s =============================
 ```
 
-**Speaker Narration:**
-> "We have 159 tests passing in under 2 seconds, achieving 86% code coverage, with full CI on both Linux and Windows.
+**Spoken:**
+> "Finally, let's run the test suite. We have 169 unit and integration tests passing with 88% code coverage, with automated CI running on Ubuntu and Windows.
 > 
-> In summary, `esim-tm` delivers all 5 required capabilities plus cross-platform support, dry-run safety, and diagnostic reporting. Thank you for your time and consideration!"
+> In summary, `esim-tm` provides a practical, safe, and extensible tool manager for the eSim toolchain. Thank you!"
